@@ -80,7 +80,7 @@ public class CircularsController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ResponseData<Circulars>> createCircular(@RequestBody Circulars circulars) {
+	public ResponseEntity<ResponseData<Circulars>> createCircular( @RequestBody Circulars circulars) {
 		if(circulars.getSociety()==null) {
 			Optional<Society> society = societyRepository.findById(1L);
 			if(society.isPresent()) {
@@ -95,7 +95,7 @@ public class CircularsController {
 	}
 
 	@PutMapping(value = {"/", "/{circularId}"})
-	public ResponseEntity<ResponseData<Circulars>> updateCircular(@PathVariable(required = false) String circularId, @RequestBody Circulars circulars) {
+	public ResponseEntity<ResponseData<Circulars>> updateCircular(@PathVariable(required = false) Long circularId, @RequestBody Circulars circulars) {
 		if(circularId == null) {
 			circularId=circulars.getCircularId();
 		}
@@ -109,7 +109,7 @@ public class CircularsController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteCircular(@PathVariable("id") String id) {
+	public ResponseEntity<Void> deleteCircular(@PathVariable("id") Long id) {
 	    circularsRepository.deleteById(id);
 	    return ResponseEntity.noContent().build();
 	}

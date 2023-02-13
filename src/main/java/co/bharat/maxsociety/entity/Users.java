@@ -35,14 +35,9 @@ public class Users {
 	private String userId;
 
 	@NotBlank
-	@Size(max = 20)
-	private String firstName;
-	
-	@Size(max = 20)
-	private String middleName;
-	
-	@Size(max = 20)
-	private String lastName;
+	@Size(max = 60)
+	private String userName;
+
 	
 	@Column(length = 20)
 	private Relationships relationship;
@@ -72,6 +67,6 @@ public class Users {
 	private Set<Role> roles = new HashSet<>();
 	
 	@Size(max = 200)
-	private String filePath;
+	private String imagePath;
 	
 }

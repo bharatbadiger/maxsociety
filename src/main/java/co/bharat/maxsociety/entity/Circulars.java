@@ -20,18 +20,16 @@ import co.bharat.maxsociety.enums.CircularStatus;
 import co.bharat.maxsociety.enums.CircularType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "circulars")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Circulars {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String circularId;
+    private Long circularId;
 
 	@NotBlank
 	@Size(max = 20)
@@ -76,6 +74,9 @@ public class Circulars {
     @JoinColumn(name = "societyCode")
     private Society society;
     
+    public Circulars() {
+    	this.society = new Society();
+    }
     public Long getSociety() {
     	return society.getSocietyCode();
     }

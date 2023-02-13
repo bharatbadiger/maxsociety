@@ -9,7 +9,7 @@ import co.bharat.maxsociety.entity.Circulars;
 import co.bharat.maxsociety.enums.CircularType;
 
 @Repository
-public interface CircularsRepository extends JpaRepository<Circulars, String> {
+public interface CircularsRepository extends JpaRepository<Circulars, Long> {
 	Long countByCircularType(CircularType circularType);
 	List<Circulars> findByCircularType(CircularType circulartype);
 	List<Circulars> findByCreatedBy(String createdby);

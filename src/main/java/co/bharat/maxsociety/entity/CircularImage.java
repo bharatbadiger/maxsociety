@@ -37,7 +37,7 @@ public class CircularImage {
     @JoinColumn(name = "circularId")
     private Circulars circular;
 
-    public String getCircular() {
+    public Long getCircular() {
         return circular.getCircularId();
     }
     
