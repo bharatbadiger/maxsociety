@@ -63,7 +63,7 @@ public class FlatsController {
 	        return new ResponseEntity<>(new ResponseData<Flats>("Flat Not Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 	        
 	    }
-		return new ResponseEntity<>(new ResponseData<Flats>("Flat Fetched Successfully", HttpStatus.NOT_FOUND.value(), existingFlat.get()), HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseData<Flats>("Flat Fetched Successfully", HttpStatus.OK.value(), existingFlat.get()), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/members/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
