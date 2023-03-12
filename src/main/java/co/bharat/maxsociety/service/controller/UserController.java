@@ -3,7 +3,6 @@ package co.bharat.maxsociety.service.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.bharat.maxsociety.entity.Role;
 import co.bharat.maxsociety.entity.Users;
 import co.bharat.maxsociety.enums.ERole;
 import co.bharat.maxsociety.enums.Relationships;
-import co.bharat.maxsociety.repository.RoleRepository;
 import co.bharat.maxsociety.repository.UserRepository;
 import co.bharat.maxsociety.response.ResponseData;
 
@@ -36,8 +33,6 @@ public class UserController {
 	public UserController(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	@Autowired
-	private RoleRepository roleRepository;
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseData<String>> handleException(Exception ex) {
@@ -49,14 +44,6 @@ public class UserController {
 	    return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	/*
-	 * @GetMapping public ResponseEntity<ResponseData<List<Users>>> getAllUsers() {
-	 * List<Users> users = userRepository.findAll(); if (users.isEmpty()) { return
-	 * new ResponseEntity<>(new ResponseData<List<Users>>("No Users Found",
-	 * HttpStatus.NOT_FOUND.value(), users),HttpStatus.NOT_FOUND); } return new
-	 * ResponseEntity<>(new ResponseData<List<Users>>("Users Fetched Successfully",
-	 * HttpStatus.OK.value(), users),HttpStatus.OK); }
-	 */
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<ResponseData<Users>> getUser(@PathVariable String id) {
@@ -66,15 +53,6 @@ public class UserController {
 		}
 		return new ResponseEntity<>(new ResponseData<Users>("User Fetched Successfully", HttpStatus.OK.value(), user.get()),HttpStatus.OK);
 	}
-	
-	/*
-	 * @GetMapping("/usersByRole") public List<Users>
-	 * getUsersByRole(@RequestParam("role") ERole
-	 * roleName, @RequestParam("relation") String relation) { Role role =
-	 * roleRepository.findByName(roleName);
-	 * 
-	 * return userRepository.findByRolesName(role.getName()); }
-	 */
 	
 	@GetMapping
 	public ResponseEntity<ResponseData<List<Users>>> getUsersByRoleAndRelationship(@RequestParam(name = "role", required = false) ERole roleName,

@@ -19,43 +19,46 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vehicles {
-	
+
 	@Id
 	private String vehicleNo;
-	
+
 	@NotBlank
 	@Size(max = 20)
 	private String vehicleType;
-	
+
 	@Size(max = 20)
 	private String brand;
-		
+
 	@Size(max = 20)
 	private String model;
-	
+
 	/*
 	 * @ManyToOne(fetch = FetchType.LAZY)
 	 * 
 	 * @JoinColumn(name = "flatNo") private Flats vehiclesAndFlats;
 	 */
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-	/*For Composite key
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	/*
+	 * For Composite key
+	 * 
 	 * @JoinColumns({
 	 * 
 	 * @JoinColumn(name = "flatNo", referencedColumnName = "flatNo"),
 	 * 
 	 * @JoinColumn(name = "societyCode", referencedColumnName = "societyCode") })
 	 */
-    @JoinColumn(name = "flatNo")
-    private Flats flats;
-    
-	/*
-	 * public String getFlats() { return flats.getFlatNo(); }
-	 */
+	@JoinColumn(name = "flatNo")
+	private Flats flats;
+
 	
-	/*For Composite key
-	 * public String getFlats() { return flats.getId().getFlatNo(); }
+	  public String getFlats() { return flats.getFlatNo(); }
+	 
+
+	/*
+	 * For Composite key public String getFlats() { return
+	 * flats.getId().getFlatNo(); }
 	 */
-    private String image;
+	private String image;
 }

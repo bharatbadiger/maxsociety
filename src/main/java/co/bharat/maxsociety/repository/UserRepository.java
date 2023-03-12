@@ -23,4 +23,12 @@ public interface UserRepository extends JpaRepository<Users, String> {
 	List<Users> findByFlatsSocietySocietyCodeAndRelationship(Long societyCode, Relationships relationship);
 	List<Users> findByFlatsSocietySocietyCode(Long societyCode);
 	List<Users> findByRelationship(Relationships relationship);
+	long countByFlats_FlatNo(String flatNo);
+	/*
+	 * @Query("SELECT u FROM Users u LEFT JOIN FETCH u.vehicles WHERE u.userId = :userId"
+	 * ) Users findUserByIdWithVehicles(@Param("userId") Long userId);
+	 * 
+	 * @Query("SELECT u FROM Users u LEFT JOIN FETCH u.vehicles LEFT JOIN FETCH u.familyMembers WHERE u.userId = :userId"
+	 * ) Users findUserByIdWithVehiclesAndFamily(@Param("userId") Long userId);
+	 */
 }

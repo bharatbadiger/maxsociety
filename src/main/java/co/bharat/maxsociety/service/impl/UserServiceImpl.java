@@ -25,7 +25,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Optional<Users> getUser(String id) {
-    return userRepository.findById(id);
+	  Optional<Users> user = userRepository.findById(id);
+	  String flatNo=user.get().getFlats().getFlatNo();
+	  user.get().setFamilyMembersCount(userRepository.countByFlats_FlatNo(flatNo));
+      return user;
   }
 
   @Override
@@ -38,5 +41,5 @@ public class UserServiceImpl implements UserService {
   public void deleteUser(String id) {
     userRepository.deleteById(id);
   }
-
+  
 }

@@ -27,7 +27,6 @@ import co.bharat.maxsociety.repository.SocietyRepository;
 import co.bharat.maxsociety.repository.UserRepository;
 import co.bharat.maxsociety.response.ResponseData;
 import co.bharat.maxsociety.service.CircularService;
-import co.bharat.maxsociety.service.UserService;
 
 @RestController
 @RequestMapping("/maxsociety/circulars")
@@ -40,7 +39,7 @@ public class CircularsController {
 	
 	@Autowired
 	private UserRepository userRepository;
-
+	
 	@Autowired
 	private SocietyRepository societyRepository;
 	

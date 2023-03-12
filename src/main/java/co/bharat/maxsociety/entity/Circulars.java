@@ -54,8 +54,7 @@ public class Circulars {
 	 * public String getCreatedBy() { return createdBy.getUserId(); }
 	 */	
 
-	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-	
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date createdOn;
 
     @PrePersist
