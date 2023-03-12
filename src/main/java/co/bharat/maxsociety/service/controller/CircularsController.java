@@ -64,6 +64,15 @@ public class CircularsController {
 	    }		
 		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.OK.value(), circulars),HttpStatus.OK);
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ResponseData<Circulars>> getCircularByCircularId(@PathVariable Long id) {
+		Optional<Circulars> circulars = circularsRepository.findById(id);
+	    if (!circulars.isPresent()) {
+	        return new ResponseEntity<>(new ResponseData<Circulars>("No Circulars Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
+	    }		
+		return new ResponseEntity<>(new ResponseData<Circulars>("Circular Fetched Successfully", HttpStatus.OK.value(), circulars.get()),HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<ResponseData<List<Circulars>>>  getCircularByUserId(@PathVariable String id) {
@@ -75,7 +84,7 @@ public class CircularsController {
 		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.NOT_FOUND.value(), existingCirculars), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/society/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<ResponseData<List<Circulars>>>  getCircularsBySocietyCode(@PathVariable Long id) {
 		List<Circulars> existingCirculars = circularsRepository.findBySociety_SocietyCode(id);
 		if (existingCirculars.isEmpty()) {
@@ -86,23 +95,13 @@ public class CircularsController {
 	}
 	
 	@RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-	public ResponseEntity<ResponseData<List<Circulars>>>  getCircularsBySocietyCode(@PathVariable CircularType circularType) {
+	public ResponseEntity<ResponseData<List<Circulars>>>  getCircularsByCircularType(@PathVariable CircularType circularType) {
 		List<Circulars> existingCirculars = circularsRepository.findByCircularType(circularType);
 		if (existingCirculars.isEmpty()) {
 	        return new ResponseEntity<>(new ResponseData<List<Circulars>>("No Circulars Found for the Type", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 	        
 	    }
 		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.OK.value(), existingCirculars), HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/society/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-	public ResponseEntity<ResponseData<Circulars>>  getCircularsByCircularId(@PathVariable Long id) {
-		Optional<Circulars> existingCirculars = circularsRepository.findById(id);
-		if (!existingCirculars.isPresent()) {
-	        return new ResponseEntity<>(new ResponseData<Circulars>("Circular Not Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
-	        
-	    }
-		return new ResponseEntity<>(new ResponseData<Circulars>("Circular Fetched Successfully", HttpStatus.OK.value(), existingCirculars.get()), HttpStatus.OK);
 	}
 	
 	@PostMapping

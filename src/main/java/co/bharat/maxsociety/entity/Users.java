@@ -97,6 +97,9 @@ public class Users {
 	private long familyMembersCount;
 
 	public long getFamilyMembersCount() {
+		if(this.flats == null) {
+			return 0;
+		}
 		return this.flats.getUsers().size() - 1;
 	}
 	/*
