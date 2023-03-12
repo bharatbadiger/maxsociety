@@ -65,7 +65,7 @@ public class Circulars {
     }
 
     
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "updatedBy")
 	private Users updatedBy;
 

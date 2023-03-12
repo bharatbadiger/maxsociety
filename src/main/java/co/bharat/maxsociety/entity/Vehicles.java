@@ -39,7 +39,7 @@ public class Vehicles {
 	 * @JoinColumn(name = "flatNo") private Flats vehiclesAndFlats;
 	 */
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	/*For Composite key
 	 * @JoinColumns({
 	 * 

@@ -36,4 +36,6 @@ public class Society {
 	//		@AttributeOverride(name = "addressLine2", column = @Column(name = "street")) })
 	private Address address;
 	
+	private String phoneNo;
+	
 }
