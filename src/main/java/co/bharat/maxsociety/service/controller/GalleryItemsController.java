@@ -3,6 +3,8 @@ package co.bharat.maxsociety.service.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.bharat.maxsociety.entity.Flats;
 import co.bharat.maxsociety.entity.GalleryItems;
 import co.bharat.maxsociety.entity.Society;
 import co.bharat.maxsociety.repository.GalleryItemsRepository;
@@ -82,6 +85,24 @@ public class GalleryItemsController {
 		}
 		GalleryItems circular = galleryItemsRepository.save(galleryItem);
 		return new ResponseEntity<>(new ResponseData<GalleryItems>("GalleryItem created Successfully", HttpStatus.OK.value(), circular),HttpStatus.OK);
+	}
+	
+	@PostMapping("/list")
+	public ResponseEntity<ResponseData<List<GalleryItems>>> createFlats(@Valid @RequestBody List<GalleryItems> flatsList) {
+		for (GalleryItems flats : flatsList) {
+			if(flats.getSociety()==null) {
+				Optional<Society> society = societyRepository.findById(1L);
+				if(society.isPresent()) {
+					flats.setSociety(society.get());
+				}
+			}
+		}
+	    try {
+	        List<GalleryItems> flats = galleryItemsRepository.saveAll(flatsList);
+	        return new ResponseEntity<>(new ResponseData<>("GalleryItem Created Successfully", HttpStatus.OK.value(), flats),HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(new ResponseData<>("Error Creating GalleryItem", HttpStatus.INTERNAL_SERVER_ERROR.value(), null),HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 
 	@PutMapping(value = {"/", "/{circularId}"})
