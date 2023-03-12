@@ -1,6 +1,6 @@
 package co.bharat.maxsociety.entity;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -44,25 +46,38 @@ public class Circulars {
 	@Size(max = 20)
 	private String fileType;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "createdBy")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "userId", referencedColumnName = "userId")
 	private Users createdBy;
 
-	public String getCreatedBy() {
-		return createdBy.getUserId();
-	}
+	/*
+	 * public String getCreatedBy() { return createdBy.getUserId(); }
+	 */	
 
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+	
 	private Date createdOn;
 
+    @PrePersist
+    protected void onCreate() {
+    	createdOn = new Date();
+    	updatedOn = createdOn;
+    }
+
+    
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "updatedBy")
 	private Users updatedBy;
 
-	public String getUpdatedBy() {
-		return updatedBy.getUserId();
-	}
+	/*
+	 * public String getUpdatedBy() { return updatedBy.getUserId(); }
+	 */
 
 	private Date updatedOn;
+    @PreUpdate
+    protected void onUpdate() {
+    	updatedOn = new Date();
+    }
 
 	private CircularType circularType;
 	
@@ -83,4 +98,8 @@ public class Circulars {
     
 	@OneToMany(mappedBy = "circular", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CircularImage> circularImages;
+	
+	private Date eventDate;
+	
+	private boolean showEventDate;
 }

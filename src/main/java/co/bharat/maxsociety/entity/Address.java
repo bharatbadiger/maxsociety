@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class Address {
     @NotNull
     @Size(max = 100)
-    private String road;
+    private String addressLine1;
 
     @NotNull
     @Size(max = 100)
-    private String area;
+    private String addressLine2;
 
     @NotNull
     @Size(max = 100)

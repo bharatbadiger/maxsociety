@@ -50,11 +50,12 @@ public class Vehicles {
     @JoinColumn(name = "flatNo")
     private Flats flats;
     
-    public String getFlats() {
-    	return flats.getFlatNo();
-    }
+	/*
+	 * public String getFlats() { return flats.getFlatNo(); }
+	 */
 	
 	/*For Composite key
 	 * public String getFlats() { return flats.getId().getFlatNo(); }
 	 */
+    private String image;
 }

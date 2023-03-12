@@ -20,10 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import co.bharat.maxsociety.entity.CircularImage;
 import co.bharat.maxsociety.entity.Circulars;
 import co.bharat.maxsociety.entity.Society;
+import co.bharat.maxsociety.entity.Users;
+import co.bharat.maxsociety.enums.CircularType;
 import co.bharat.maxsociety.repository.CircularsRepository;
 import co.bharat.maxsociety.repository.SocietyRepository;
+import co.bharat.maxsociety.repository.UserRepository;
 import co.bharat.maxsociety.response.ResponseData;
 import co.bharat.maxsociety.service.CircularService;
+import co.bharat.maxsociety.service.UserService;
 
 @RestController
 @RequestMapping("/maxsociety/circulars")
@@ -34,6 +38,9 @@ public class CircularsController {
 		this.circularsRepository = circularsRepository;
 	}
 	
+	@Autowired
+	private UserRepository userRepository;
+
 	@Autowired
 	private SocietyRepository societyRepository;
 	
@@ -69,14 +76,34 @@ public class CircularsController {
 		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.NOT_FOUND.value(), existingCirculars), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/society/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<ResponseData<List<Circulars>>>  getCircularsBySocietyCode(@PathVariable Long id) {
 		List<Circulars> existingCirculars = circularsRepository.findBySociety_SocietyCode(id);
 		if (existingCirculars.isEmpty()) {
 	        return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circular Not Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 	        
 	    }
-		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.NOT_FOUND.value(), existingCirculars), HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.OK.value(), existingCirculars), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public ResponseEntity<ResponseData<List<Circulars>>>  getCircularsBySocietyCode(@PathVariable CircularType circularType) {
+		List<Circulars> existingCirculars = circularsRepository.findByCircularType(circularType);
+		if (existingCirculars.isEmpty()) {
+	        return new ResponseEntity<>(new ResponseData<List<Circulars>>("No Circulars Found for the Type", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
+	        
+	    }
+		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.OK.value(), existingCirculars), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/society/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public ResponseEntity<ResponseData<Circulars>>  getCircularsByCircularId(@PathVariable Long id) {
+		Optional<Circulars> existingCirculars = circularsRepository.findById(id);
+		if (!existingCirculars.isPresent()) {
+	        return new ResponseEntity<>(new ResponseData<Circulars>("Circular Not Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
+	        
+	    }
+		return new ResponseEntity<>(new ResponseData<Circulars>("Circular Fetched Successfully", HttpStatus.OK.value(), existingCirculars.get()), HttpStatus.OK);
 	}
 	
 	@PostMapping
@@ -90,6 +117,21 @@ public class CircularsController {
 		for (CircularImage circularImage : circulars.getCircularImages()) {
             circularImage.setCircular(circulars);
         }
+		Optional<Users> user = userRepository.findById(String.valueOf(circulars.getCreatedBy().getUserId()));
+		if(!user.isPresent()) {
+			return new ResponseEntity<>(new ResponseData<Circulars>("No User Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
+		}
+		circulars.setCreatedBy(user.get());
+		circulars.setUpdatedBy(user.get());
+		if (!String.valueOf(circulars.getCreatedBy()).equalsIgnoreCase(String.valueOf(circulars.getUpdatedBy()))) {
+			Optional<Users> user2 = userRepository.findById(String.valueOf(circulars.getCreatedBy().getUserId()));
+			if (!user.isPresent()) {
+				return new ResponseEntity<>(
+						new ResponseData<Circulars>("No User Found", HttpStatus.NOT_FOUND.value(), null),
+						HttpStatus.NOT_FOUND);
+			}
+			circulars.setUpdatedBy(user2.get());
+		}
 		Circulars circular = circularService.createCircular(circulars);
 		return new ResponseEntity<>(new ResponseData<Circulars>("Circular created Successfully", HttpStatus.OK.value(), circular),HttpStatus.OK);
 	}

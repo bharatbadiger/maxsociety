@@ -83,6 +83,24 @@ public class FlatsController {
 		Flats flat = flatsRepository.save(apartment);
 		return new ResponseEntity<>(new ResponseData<Flats>("Flat Created Successfully", HttpStatus.OK.value(), flat),HttpStatus.OK);
 	}
+	
+	@PostMapping("/list")
+	public ResponseEntity<ResponseData<List<Flats>>> createFlats(@Valid @RequestBody List<Flats> flatsList) {
+		for (Flats flats : flatsList) {
+			if(flats.getSociety()==null) {
+				Optional<Society> society = societyRepository.findById(1L);
+				if(society.isPresent()) {
+					flats.setSociety(society.get());
+				}
+			}
+		}
+	    try {
+	        List<Flats> flats = flatsRepository.saveAll(flatsList);
+	        return new ResponseEntity<>(new ResponseData<>("Flats Created Successfully", HttpStatus.OK.value(), flats),HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(new ResponseData<>("Error Creating Flats", HttpStatus.INTERNAL_SERVER_ERROR.value(), null),HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 
 	@PutMapping(value = {"/", "/{flatCode}"})
 	public ResponseEntity<ResponseData<Flats>> updateApartment(@PathVariable(required = false) String flatCode,@RequestBody Flats apartment) {
