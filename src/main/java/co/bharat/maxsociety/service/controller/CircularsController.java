@@ -94,7 +94,7 @@ public class CircularsController {
 		return new ResponseEntity<>(new ResponseData<List<Circulars>>("Circulars Fetched Successfully", HttpStatus.OK.value(), existingCirculars), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/type/{circularType}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<ResponseData<List<Circulars>>>  getCircularsByCircularType(@PathVariable CircularType circularType) {
 		List<Circulars> existingCirculars = circularsRepository.findByCircularType(circularType);
 		if (existingCirculars.isEmpty()) {
