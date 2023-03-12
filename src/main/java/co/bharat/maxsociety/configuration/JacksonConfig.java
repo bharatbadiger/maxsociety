@@ -12,13 +12,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration
 public class JacksonConfig {
 	
-	/*
-	 * @Bean public ObjectMapper objectMapper() { ObjectMapper objectMapper = new
-	 * ObjectMapper(); objectMapper.setDateFormat(new
-	 * SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
-	 * objectMapper.registerModule(new JavaTimeModule());
-	 * objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); return
-	 * objectMapper; }
-	 */
+	
+	  @Bean public ObjectMapper objectMapper() { ObjectMapper objectMapper = new
+	  ObjectMapper(); objectMapper.setDateFormat(new
+	  SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+	  objectMapper.registerModule(new JavaTimeModule());
+	  objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); return
+	  objectMapper; }
+	 
 
 }
