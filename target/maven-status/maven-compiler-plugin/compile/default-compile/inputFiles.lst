@@ -2,6 +2,8 @@
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/Role.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/Society.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/UserService.java
+/home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/EmergencyContacts.java
+/home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/controller/EmergencyContactsController.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/enums/CircularType.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/FlatsService.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/impl/CircularServiceImpl.java
@@ -36,5 +38,6 @@
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/CircularService.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/response/ResponseData.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/VehiclesRepository.java
+/home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/EmergencyContactsRepository.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/UserRepository.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/SocietyApplication.java

@@ -63,4 +63,6 @@ public class GalleryItems {
 		return society.getSocietyCode();
 	}
 	
+	private String thumbnail;
+	
 }
