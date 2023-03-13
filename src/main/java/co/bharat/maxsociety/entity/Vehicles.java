@@ -50,10 +50,12 @@ public class Vehicles {
 	 * @JoinColumn(name = "societyCode", referencedColumnName = "societyCode") })
 	 */
 	@JoinColumn(name = "flatNo")
+	//@JoinColumn(name = "wing")
+	//@JoinColumn(name = "tower")
 	private Flats flats;
 
 	
-	  public String getFlats() { return flats.getFlatNo(); }
+	public String getFlats() { return flats.getFlatNo(); }
 	 
 
 	/*

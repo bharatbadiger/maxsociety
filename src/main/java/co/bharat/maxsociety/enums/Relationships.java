@@ -11,6 +11,7 @@ public enum Relationships {
     SON,
     BROTHER,
     SISTER,
+    TENANT,
     OTHER;
 
     public static Relationships getRelationships(String status) {

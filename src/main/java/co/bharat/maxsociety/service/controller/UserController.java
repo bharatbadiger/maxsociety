@@ -109,7 +109,7 @@ public class UserController {
 	        
 	    }
 		Users updatedUser = userRepository.save(user);
-		return new ResponseEntity<>(new ResponseData<Users>("User Created Successfully", HttpStatus.OK.value(), updatedUser),HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseData<Users>("User Updated Successfully", HttpStatus.OK.value(), updatedUser),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")

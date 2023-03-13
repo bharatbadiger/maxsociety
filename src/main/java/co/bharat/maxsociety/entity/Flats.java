@@ -23,6 +23,7 @@ import lombok.Data;
 @Data
 //@NoArgsConstructor
 @AllArgsConstructor
+//@IdClass(FlatsId.class)
 public class Flats {
 
 	@Id

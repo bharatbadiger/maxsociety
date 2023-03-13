@@ -10,6 +10,8 @@ import co.bharat.maxsociety.entity.GalleryItems;
 @Repository
 public interface GalleryItemsRepository extends JpaRepository<GalleryItems, Long> {
 
-	List<GalleryItems> findBySociety_SocietyCode(Long id);
+	List<GalleryItems> findBySociety_SocietyCodeOrderByUpdatedOnDesc(Long id);
+
+	List<GalleryItems> findByOrderByUpdatedOnDesc();
 
 }

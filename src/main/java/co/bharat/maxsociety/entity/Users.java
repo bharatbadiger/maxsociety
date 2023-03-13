@@ -62,6 +62,11 @@ public class Users {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flatNo", referencedColumnName = "flatNo")
+
+	//@JoinColumn(name = "wing", referencedColumnName = "wing")
+
+	//@JoinColumn(name = "tower", referencedColumnName = "tower")
+
 	//@JoinTable(name = "flats", joinColumns = @JoinColumn(name = "flatNo"), inverseJoinColumns = @JoinColumn(name = "flatNo"))
 	private Flats flats;
 

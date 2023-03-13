@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.bharat.maxsociety.entity.Flats;
 import co.bharat.maxsociety.entity.GalleryItems;
 import co.bharat.maxsociety.entity.Society;
 import co.bharat.maxsociety.repository.GalleryItemsRepository;
@@ -48,7 +47,7 @@ public class GalleryItemsController {
 	
 	@GetMapping
 	public ResponseEntity<ResponseData<List<GalleryItems>>> getAllGalleryItems() {
-		List<GalleryItems> circulars = galleryItemsRepository.findAll();
+		List<GalleryItems> circulars = galleryItemsRepository.findByOrderByUpdatedOnDesc();
 	    if (circulars.isEmpty()) {
 	        return new ResponseEntity<>(new ResponseData<List<GalleryItems>>("No GalleryItems Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 	    }		
@@ -67,7 +66,7 @@ public class GalleryItemsController {
 	
 	@RequestMapping(value = "/society/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<ResponseData<List<GalleryItems>>>  getGalleryItemsBySocietyCode(@PathVariable Long id) {
-		List<GalleryItems> existingGalleryItems = galleryItemsRepository.findBySociety_SocietyCode(id);
+		List<GalleryItems> existingGalleryItems = galleryItemsRepository.findBySociety_SocietyCodeOrderByUpdatedOnDesc(id);
 		if (existingGalleryItems.isEmpty()) {
 	        return new ResponseEntity<>(new ResponseData<List<GalleryItems>>("Circular Not Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 	        

@@ -35,6 +35,7 @@ co/bharat/maxsociety/service/controller/GalleryItemsController.class
 co/bharat/maxsociety/service/controller/CircularsController.class
 co/bharat/maxsociety/enums/Relationships.class
 co/bharat/maxsociety/entity/CircularImage.class
+co/bharat/maxsociety/entity/FlatsId.class
 co/bharat/maxsociety/entity/GalleryItems.class
 co/bharat/maxsociety/entity/Role.class
 co/bharat/maxsociety/repository/RoleRepository.class
