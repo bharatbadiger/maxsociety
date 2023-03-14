@@ -76,11 +76,16 @@ public class EmergencyContactsController {
 	@PostMapping
 	public ResponseEntity<ResponseData<EmergencyContacts>> createEmergencyContact(
 			@RequestBody EmergencyContacts emergencyContact) {
-		/*
-		 * if(emergencyContact.getSociety()==null) { Optional<Society> society =
-		 * societyRepository.findById(1L); if(society.isPresent()) {
-		 * emergencyContact.setSociety(society.get()); } }
-		 */
+		List<EmergencyContacts> emergencyContacts = emergencyContactsRepository.findByCategory(emergencyContact.getCategory());
+		if (!emergencyContacts.isEmpty()) {
+			EmergencyContacts existingEmergencyContact = emergencyContacts.get(0);
+			Set<String> phoneNumbers = existingEmergencyContact.getPhoneNumbers();
+			phoneNumbers.addAll(emergencyContact.getPhoneNumbers());
+			emergencyContactsRepository.save(emergencyContact);
+			return new ResponseEntity<>(new ResponseData<EmergencyContacts>("EmergencyContact Updated Successfully",
+					HttpStatus.OK.value(), emergencyContact), HttpStatus.OK);
+
+		}
 		EmergencyContacts circular = emergencyContactsRepository.save(emergencyContact);
 		return new ResponseEntity<>(new ResponseData<EmergencyContacts>("EmergencyContact created Successfully",
 				HttpStatus.OK.value(), circular), HttpStatus.OK);
@@ -114,9 +119,13 @@ public class EmergencyContactsController {
 		Set<String> phoneNumbers = emergencyContact.get().getPhoneNumbers();
 
 		if (phoneNumbers.contains(phoneNumber)) {
-			phoneNumbers.remove(phoneNumber);
-			emergencyContact.get().setPhoneNumbers(phoneNumbers);
-			emergencyContactsRepository.save(emergencyContact.get());
+			if(phoneNumbers.size()==1) {
+				emergencyContactsRepository.deleteById(emergencyContact.get().getId());
+			} else {
+				phoneNumbers.remove(phoneNumber);
+				emergencyContact.get().setPhoneNumbers(phoneNumbers);
+				emergencyContactsRepository.save(emergencyContact.get());
+			}
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();

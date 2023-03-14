@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import co.bharat.maxsociety.entity.EmergencyContacts;
 import co.bharat.maxsociety.entity.GalleryItems;
+import java.lang.String;
 
 @Repository
 public interface EmergencyContactsRepository extends JpaRepository<EmergencyContacts, Long> {
 
 	List<EmergencyContacts> findBySociety_SocietyCode(Long id);
+	List<EmergencyContacts> findByCategory(String category);
 
 }
