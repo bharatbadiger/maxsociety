@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,9 +83,9 @@ public class EmergencyContactsController {
 			EmergencyContacts existingEmergencyContact = emergencyContacts.get(0);
 			Set<String> phoneNumbers = existingEmergencyContact.getPhoneNumbers();
 			phoneNumbers.addAll(emergencyContact.getPhoneNumbers());
-			emergencyContactsRepository.save(emergencyContact);
+			emergencyContactsRepository.save(existingEmergencyContact);
 			return new ResponseEntity<>(new ResponseData<EmergencyContacts>("EmergencyContact Updated Successfully",
-					HttpStatus.OK.value(), emergencyContact), HttpStatus.OK);
+					HttpStatus.OK.value(), existingEmergencyContact), HttpStatus.OK);
 
 		}
 		EmergencyContacts circular = emergencyContactsRepository.save(emergencyContact);
@@ -93,7 +95,7 @@ public class EmergencyContactsController {
 
 	@PutMapping(value = { "/", "/{emergencyContactId}" })
 	public ResponseEntity<ResponseData<EmergencyContacts>> updateEmergencyContact(
-			@PathVariable(required = false) Long emergencyContactId, @RequestBody EmergencyContacts emergencyContact) {
+			@PathVariable(required = false) Long emergencyContactId, @Valid @RequestBody EmergencyContacts emergencyContact) {
 		if (emergencyContactId == null) {
 			emergencyContactId = emergencyContact.getId();
 		}
@@ -119,13 +121,13 @@ public class EmergencyContactsController {
 		Set<String> phoneNumbers = emergencyContact.get().getPhoneNumbers();
 
 		if (phoneNumbers.contains(phoneNumber)) {
-			if(phoneNumbers.size()==1) {
+/*			if(phoneNumbers.size()==1) {
 				emergencyContactsRepository.deleteById(emergencyContact.get().getId());
-			} else {
+			} else {*/
 				phoneNumbers.remove(phoneNumber);
 				emergencyContact.get().setPhoneNumbers(phoneNumbers);
 				emergencyContactsRepository.save(emergencyContact.get());
-			}
+			/* } */
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();

@@ -47,7 +47,7 @@ public class Circulars {
 	private String fileType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "userId", referencedColumnName = "userId")
+	@JoinColumn(name = "createdBy")
 	private Users createdBy;
 
 	/*
