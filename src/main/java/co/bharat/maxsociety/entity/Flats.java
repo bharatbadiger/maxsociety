@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import co.bharat.maxsociety.enums.FlatType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -82,5 +83,7 @@ public class Flats {
 	 * 
 	 * return flatUsers; }
 	 */
+	
+	private FlatType type;
 
 }
