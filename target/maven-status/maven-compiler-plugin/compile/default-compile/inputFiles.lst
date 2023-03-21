@@ -8,6 +8,7 @@
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/FlatsService.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/impl/CircularServiceImpl.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/FlatCompositeId.java
+/home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/enums/FlatType.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/impl/UserServiceImpl.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/CircularsRepository.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/response/UserResponse.java

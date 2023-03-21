@@ -9,6 +9,7 @@ co/bharat/maxsociety/repository/SocietyRepository.class
 co/bharat/maxsociety/service/controller/VehiclesController.class
 co/bharat/maxsociety/enums/GalleryItemType.class
 co/bharat/maxsociety/configuration/JacksonConfig.class
+co/bharat/maxsociety/enums/FlatType.class
 co/bharat/maxsociety/enums/Gender.class
 co/bharat/maxsociety/entity/Society.class
 co/bharat/maxsociety/entity/Users.class
