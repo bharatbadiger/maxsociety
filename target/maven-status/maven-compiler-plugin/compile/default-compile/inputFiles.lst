@@ -1,3 +1,4 @@
+/home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/GateKeepRequest.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/controller/GalleryItemsController.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/Role.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/Society.java
@@ -16,6 +17,7 @@
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/Address.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/RoleRepository.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/enums/Gender.java
+/home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/configuration/FirebaseConfig.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/FlatsId.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/entity/Circulars.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/controller/VehiclesController.java
@@ -41,4 +43,5 @@
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/VehiclesRepository.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/EmergencyContactsRepository.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/repository/UserRepository.java
+/home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/service/controller/CloudMessagingController.java
 /home/ubuntu/maxsociety/src/main/java/co/bharat/maxsociety/SocietyApplication.java

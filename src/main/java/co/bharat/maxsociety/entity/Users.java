@@ -115,9 +115,6 @@ public class Users {
 	 * return usersList; }
 	 */
 	 
-
-	
-	
-
+	private String fcmToken;
 
 }
