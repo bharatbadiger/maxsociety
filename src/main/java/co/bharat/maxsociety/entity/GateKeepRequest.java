@@ -1,21 +1,16 @@
 package co.bharat.maxsociety.entity;
 
 import java.util.Date;
-import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +24,7 @@ import lombok.NoArgsConstructor;
 public class GateKeepRequest {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	/*
 	 * @GeneratedValue(generator = "uuid2")
 	 * 
@@ -37,7 +33,7 @@ public class GateKeepRequest {
 	 * 
 	 * @Column(columnDefinition = "uuid", updatable = false, nullable = false)
 	 */
-	private String id;
+	private Long id;
 
 	@NotNull
 	private String guardId;
@@ -52,21 +48,39 @@ public class GateKeepRequest {
 
 	@NotNull
 	private Date gkReqInitTime;
-	
-    @PrePersist
-    protected void onCreate() {
-    	gkReqInitTime = new Date();
-    }
+
+	@PrePersist
+	protected void onCreate() {
+		gkReqInitTime = new Date();
+		gkReqActionTime = gkReqInitTime;
+	}
 
 	@NotNull
 	private String status;
 
+	// private String notificationType;
+
 	private Date gkReqActionTime;
 
+	@PreUpdate
+	protected void onUpdate() {
+		gkReqActionTime = new Date();
+	}
+
 	@NotNull
+	@Transient
 	private String title;
 
 	@NotNull
+	@Transient
 	private String body;
+
+	private String path;
+
+	/*
+	 * public GateKeepRequest() { if(getGkReqInitTime() == null) { gkReqInitTime =
+	 * new Date(); } if(getGkReqActionTime() == null) { gkReqActionTime = new
+	 * Date(); } }
+	 */
 
 }

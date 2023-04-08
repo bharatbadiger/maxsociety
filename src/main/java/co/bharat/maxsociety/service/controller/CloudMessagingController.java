@@ -2,8 +2,7 @@ package co.bharat.maxsociety.service.controller;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-
-import javax.validation.Valid;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -27,6 +27,7 @@ import com.google.firebase.messaging.Notification;
 import co.bharat.maxsociety.entity.GateKeepRequest;
 import co.bharat.maxsociety.entity.Users;
 import co.bharat.maxsociety.enums.Relationships;
+import co.bharat.maxsociety.repository.GateKeepRequestRepository;
 import co.bharat.maxsociety.repository.UserRepository;
 import co.bharat.maxsociety.response.ResponseData;
 
@@ -39,6 +40,9 @@ public class CloudMessagingController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private GateKeepRequestRepository gateKeepRequestRepository;
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseData<String>> handleException(Exception ex) {
@@ -88,14 +92,29 @@ public class CloudMessagingController {
 
 	
     @PostMapping("/sendNotification")
-    public ResponseEntity<String> sendNotification(@Valid @RequestBody GateKeepRequest fcmRequest) {
+    public ResponseEntity<String> sendNotification(@RequestBody GateKeepRequest fcmRequest) {
     	Users user = userRepository.findByFlatsFlatNoAndRelationship(fcmRequest.getFlatNo(),Relationships.SELF);
+    	GateKeepRequest request = gateKeepRequestRepository.save(fcmRequest);
+		/*
+		 * ObjectMapper objectMapper = new ObjectMapper(); Map<String, String> map =
+		 * objectMapper.convertValue(request, Map.class);
+		 */
         Message message = Message.builder()
                 .setNotification(Notification.builder().setTitle(fcmRequest.getTitle()).setBody(fcmRequest.getBody()).build())
+                .putData("id", String.valueOf(request.getId()))
+                .putData("title", request.getTitle())
+                .putData("body", request.getBody())
+                .putData("status", request.getStatus())
+                .putData("flatNo", request.getFlatNo())
+                .putData("visitorName", request.getVisitorName())
+                .putData("visitPurpose", request.getVisitPurpose())
+                .putData("path", request.getPath())
+                .putData("visitPurpose", request.getVisitPurpose())
                 .setToken(user.getFcmToken())
                 .build();
         try {
             String response = firebaseMessaging.send(message);
+            System.out.println(response);
             return ResponseEntity.ok(response);
         } catch (FirebaseMessagingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
