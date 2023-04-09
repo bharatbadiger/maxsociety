@@ -34,6 +34,7 @@ co/bharat/maxsociety/response/UserResponse.class
 co/bharat/maxsociety/response/ResponseData.class
 co/bharat/maxsociety/repository/VehiclesRepository.class
 co/bharat/maxsociety/enums/CircularType.class
+co/bharat/maxsociety/repository/GateKeepRequestRepository.class
 co/bharat/maxsociety/service/UserService.class
 co/bharat/maxsociety/service/controller/UserController.class
 co/bharat/maxsociety/repository/CircularsRepository.class

@@ -1,6 +1,5 @@
 package co.bharat.maxsociety.configuration;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.springframework.context.annotation.Bean;
@@ -19,7 +18,7 @@ public class FirebaseConfig {
     public FirebaseMessaging firebaseMessaging() throws IOException {
         //FileInputStream serviceAccount = new FileInputStream("./max-society-firebase-key.json");
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
+        FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(new ClassPathResource("max-society-firebase-key.json").getInputStream()))
                 .build();
 

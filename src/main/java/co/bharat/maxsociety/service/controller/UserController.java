@@ -94,6 +94,11 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<ResponseData<Users>> createUser(@RequestBody Users user) {
+		Users existingUser = userRepository.findByFlatsFlatNoAndRelationship(user.getFlats().getFlatNo(), Relationships.SELF);
+		if (existingUser != null) {
+	        return new ResponseEntity<>(new ResponseData<Users>("Flat already has a SELF user registered", HttpStatus.CONFLICT.value(), null),HttpStatus.CONFLICT);
+	        
+	    }
 		Users newUser = userRepository.save(user);
 		return new ResponseEntity<>(new ResponseData<Users>("User Created Successfully", HttpStatus.OK.value(), newUser),HttpStatus.OK);
 	}
