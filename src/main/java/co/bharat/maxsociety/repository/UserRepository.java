@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import co.bharat.maxsociety.entity.Users;
 import co.bharat.maxsociety.enums.ERole;
 import co.bharat.maxsociety.enums.Relationships;
+import java.lang.String;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, String> {

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,23 +47,27 @@ public class CloudMessagingController {
 	@Autowired
 	private GateKeepRequestRepository gateKeepRequestRepository;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CloudMessagingController.class);
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseData<String>> handleException(Exception ex) {
 		ResponseData<String> responseData = ResponseData.<String>builder()
 				.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(ex.getMessage()).data(null).build();
+		LOGGER.error("Error encountered : "+ex.getMessage(),ex);
 		return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@GetMapping("/getNotifications")
 	public ResponseEntity<ResponseData<?>> getNotifications(@RequestParam(defaultValue = "0", name = "pageNumber", required = false) int pageNumber,
-	        @RequestParam(defaultValue = "10", name = "pageSize", required = false) int pageSize)
+	        @RequestParam(defaultValue = "100", name = "pageSize", required = false) int pageSize, @RequestParam(name = "flatNo", required = false) String flatNo)
 			throws IOException, FirebaseMessagingException {
 		Sort sort = Sort.by("gkReqInitTime").descending();
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-		Page<GateKeepRequest> pageResult = gateKeepRequestRepository.findAll(pageable);
-		//List<GateKeepRequest> gateKeepRequests = gateKeepRequestRepository.findAll(Sort.by(Sort.Direction.DESC, "gkReqInitTime"));
-		
-		//List<GateKeepRequest> results = pageResult.getContent();
+		Page<GateKeepRequest> pageResult;
+		if(flatNo !=null) {
+			pageResult = gateKeepRequestRepository.findByFlatNo(flatNo,pageable);
+		} else {
+			pageResult = gateKeepRequestRepository.findAll(pageable);
+		}
 		
 		Map<String, Object> response = new HashMap<>();
 	    response.put("gateKeepRequests", pageResult.getContent());
@@ -82,32 +88,40 @@ public class CloudMessagingController {
     		Users user = userRepository.findByFlatsFlatNoAndRelationship(fcmRequest.getFlatNo(),Relationships.SELF);
     		if(user == null) {
     			return new ResponseEntity<>(
-        				new ResponseData<>("Invalid Flat No", HttpStatus.INTERNAL_SERVER_ERROR.value(),null),
-        				HttpStatus.OK);
+        				new ResponseData<>("Invalid Flat No", HttpStatus.BAD_REQUEST.value(),null),
+        				HttpStatus.BAD_REQUEST);
     		}
     		fcmToken = user.getFcmToken();
     	} else {
+    		Optional<GateKeepRequest> existingfcmRequest=gateKeepRequestRepository.findById(fcmRequest.getId());
+    		if(!existingfcmRequest.isPresent()) {
+    			return new ResponseEntity<>(
+        				new ResponseData<>("Invalid gateKeepRequest Id", HttpStatus.BAD_REQUEST.value(),null),
+        				HttpStatus.BAD_REQUEST);
+    		}
     		Optional<Users> guard = userRepository.findById(fcmRequest.getGuardId());
     		if(!guard.isPresent()) {
     			return new ResponseEntity<>(
-        				new ResponseData<>("Invalid Guard Id", HttpStatus.INTERNAL_SERVER_ERROR.value(),null),
-        				HttpStatus.OK);
+        				new ResponseData<>("Invalid Guard Id", HttpStatus.BAD_REQUEST.value(),null),
+        				HttpStatus.BAD_REQUEST);
     		}
     		fcmToken = guard.get().getFcmToken();
+    		fcmRequest.setGkReqInitTime(existingfcmRequest.get().getGkReqInitTime());
+    		
     	}
     	GateKeepRequest request = gateKeepRequestRepository.save(fcmRequest);
         Message message = Message.builder()
                 .setNotification(Notification.builder().setTitle(fcmRequest.getTitle()).setBody(fcmRequest.getBody()).build())
                 .putData("id", String.valueOf(request.getId()))
                 .putData("guardId", request.getGuardId())
-                .putData("title", request.getTitle())
-                .putData("body", request.getBody())
+                .putData("guardName", request.getGuardName())
+                .putData("title", fcmRequest.getTitle())
+                .putData("body", fcmRequest.getBody())
                 .putData("status", request.getStatus())
                 .putData("flatNo", request.getFlatNo())
                 .putData("visitorName", request.getVisitorName())
                 .putData("visitPurpose", request.getVisitPurpose())
                 .putData("path", request.getPath())
-                .putData("visitPurpose", request.getVisitPurpose())
                 .setToken(fcmToken)
                 .build();
         try {
@@ -118,8 +132,8 @@ public class CloudMessagingController {
     				HttpStatus.OK);
         } catch (FirebaseMessagingException e) {
             return new ResponseEntity<>(
-    				new ResponseData<>("Notification sent successfully", HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
-    				HttpStatus.OK);
+    				new ResponseData<>("Error in sending Notification", HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+    				HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

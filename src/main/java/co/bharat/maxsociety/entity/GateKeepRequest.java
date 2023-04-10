@@ -37,6 +37,8 @@ public class GateKeepRequest {
 
 	@NotNull
 	private String guardId;
+	
+	private String guardName;
 
 	@NotNull
 	private String flatNo;
@@ -46,7 +48,6 @@ public class GateKeepRequest {
 
 	private String visitPurpose;
 
-	@NotNull
 	private Date gkReqInitTime;
 
 	@PrePersist
@@ -67,11 +68,9 @@ public class GateKeepRequest {
 		gkReqActionTime = new Date();
 	}
 
-	@NotNull
 	@Transient
 	private String title;
 
-	@NotNull
 	@Transient
 	private String body;
 
