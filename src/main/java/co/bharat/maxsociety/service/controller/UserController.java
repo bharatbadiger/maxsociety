@@ -3,6 +3,7 @@ package co.bharat.maxsociety.service.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,13 +52,20 @@ public class UserController {
 		if(!user.isPresent()) {
 			return new ResponseEntity<>(new ResponseData<Users>("No User Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 		}
+		/*
+		 * if (user.get().getImei()!=null) { return new ResponseEntity<>(new
+		 * ResponseData<Users>("User IMEI does not exist",
+		 * HttpStatus.BAD_REQUEST.value(), null),HttpStatus.BAD_REQUEST); }
+		 */
 		return new ResponseEntity<>(new ResponseData<Users>("User Fetched Successfully", HttpStatus.OK.value(), user.get()),HttpStatus.OK);
 	}
 	
 	@GetMapping
 	public ResponseEntity<ResponseData<List<Users>>> getUsersByRoleAndRelationship(@RequestParam(name = "role", required = false) ERole roleName,
 	        @RequestParam(name = "societyCode", required = false) Long societyCode,
-	        @RequestParam(name = "relation", required = false) Relationships relationship) {
+	        @RequestParam(name = "relation", required = false) Relationships relationship,
+	        @RequestParam(name = "imei", required = false) String imei,
+	        @RequestParam(name = "userId", required = false) String userId) {
 	    
 		List<Users> users;
 	    if (roleName != null && societyCode != null && relationship != null) {
@@ -72,6 +80,9 @@ public class UserController {
 	    } else if (societyCode != null && relationship != null) {
 	        // Fetch users by societyCode and relationship
 	    	users = userRepository.findByFlatsSocietySocietyCodeAndRelationship(societyCode, relationship);
+	    } else if (userId != null && imei != null) {
+	        // Fetch users by societyCode and relationship
+	    	users = userRepository.findByUserIdAndImei(userId, imei);
 	    } else if (roleName != null) {
 	        // Fetch users by roleName
 	    	users = userRepository.findByRolesName(roleName);
@@ -104,7 +115,8 @@ public class UserController {
 	}
 
 	@PutMapping(value = {"/", "/{id}"})
-	public ResponseEntity<ResponseData<Users>> updateUser(@PathVariable(required = false) String id,  @RequestBody Users user) {
+	public ResponseEntity<ResponseData<?>> updateUser(@PathVariable(required = false) String id,  @RequestBody Users user) {
+		boolean isImeiUpdated=false;
 		if(id == null) {
 			id=user.getUserId();
 		}
@@ -113,8 +125,17 @@ public class UserController {
 	        return new ResponseEntity<>(new ResponseData<Users>("User Not Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 	        
 	    }
+		if((existingUser.get().getImei()== null || existingUser.get().getImei().isEmpty()) && user.getImei()!=null) {
+			isImeiUpdated=true;
+		}
 		Users updatedUser = userRepository.save(user);
-		return new ResponseEntity<>(new ResponseData<Users>("User Updated Successfully", HttpStatus.OK.value(), updatedUser),HttpStatus.OK);
+		if(isImeiUpdated) {
+			JSONObject newResponse = new JSONObject(updatedUser);
+			newResponse.put("isImeiAdded", "true");
+			return new ResponseEntity<>(new ResponseData<>("User Updated Successfully", HttpStatus.OK.value(), newResponse),HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>(new ResponseData<>("User Updated Successfully", HttpStatus.OK.value(), updatedUser),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")

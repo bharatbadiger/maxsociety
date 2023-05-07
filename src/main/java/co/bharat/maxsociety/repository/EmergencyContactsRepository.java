@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import co.bharat.maxsociety.entity.EmergencyContacts;
-import co.bharat.maxsociety.entity.GalleryItems;
 import java.lang.String;
 
 @Repository
