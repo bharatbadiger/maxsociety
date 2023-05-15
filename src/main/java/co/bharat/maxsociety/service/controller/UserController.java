@@ -1,9 +1,10 @@
 package co.bharat.maxsociety.service.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +24,7 @@ import co.bharat.maxsociety.entity.Users;
 import co.bharat.maxsociety.enums.ERole;
 import co.bharat.maxsociety.enums.Relationships;
 import co.bharat.maxsociety.repository.UserRepository;
+import co.bharat.maxsociety.response.AdditionalResponseData;
 import co.bharat.maxsociety.response.ResponseData;
 
 @RestController
@@ -115,14 +117,14 @@ public class UserController {
 	}
 
 	@PutMapping(value = {"/", "/{id}"})
-	public ResponseEntity<ResponseData<?>> updateUser(@PathVariable(required = false) String id,  @RequestBody Users user) {
+	public ResponseEntity<AdditionalResponseData<?>> updateUser(@PathVariable(required = false) String id,  @RequestBody Users user) {
 		boolean isImeiUpdated=false;
 		if(id == null) {
 			id=user.getUserId();
 		}
 		Optional<Users> existingUser = userRepository.findById(id);
 		if (!existingUser.isPresent()) {
-	        return new ResponseEntity<>(new ResponseData<Users>("User Not Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
+	        return new ResponseEntity<>(new AdditionalResponseData<Users>("User Not Found", HttpStatus.NOT_FOUND.value(), null, null),HttpStatus.NOT_FOUND);
 	        
 	    }
 		if((existingUser.get().getImei()== null || existingUser.get().getImei().isEmpty()) && user.getImei()!=null) {
@@ -130,12 +132,13 @@ public class UserController {
 		}
 		Users updatedUser = userRepository.save(user);
 		if(isImeiUpdated) {
-			JSONObject newResponse = new JSONObject(updatedUser);
+			//JSONObject newResponse = new JSONObject();
+			Map<String,Object> newResponse = new HashMap<String,Object>();
 			newResponse.put("isImeiAdded", "true");
-			return new ResponseEntity<>(new ResponseData<>("User Updated Successfully", HttpStatus.OK.value(), newResponse),HttpStatus.OK);
+			return new ResponseEntity<>(new AdditionalResponseData<>("User Updated Successfully", HttpStatus.OK.value(), newResponse, updatedUser),HttpStatus.OK);
 
 		}
-		return new ResponseEntity<>(new ResponseData<>("User Updated Successfully", HttpStatus.OK.value(), updatedUser),HttpStatus.OK);
+		return new ResponseEntity<>(new AdditionalResponseData<>("User Updated Successfully", HttpStatus.OK.value(), null, updatedUser),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")

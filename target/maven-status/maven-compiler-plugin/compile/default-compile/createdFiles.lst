@@ -1,15 +1,20 @@
 co/bharat/maxsociety/repository/FlatsRepository.class
+co/bharat/maxsociety/request/DTO/DeRegistrationRequestDTO.class
+co/bharat/maxsociety/entity/DeRegistrationRequest$DeRegistrationRequestBuilder.class
 co/bharat/maxsociety/enums/CircularStatus.class
 co/bharat/maxsociety/repository/GalleryItemsRepository.class
 co/bharat/maxsociety/repository/SocietyRepository.class
 co/bharat/maxsociety/service/controller/VehiclesController.class
 co/bharat/maxsociety/enums/GalleryItemType.class
 co/bharat/maxsociety/enums/Gender.class
+co/bharat/maxsociety/response/AdditionalResponseData.class
 co/bharat/maxsociety/entity/Society.class
 co/bharat/maxsociety/entity/Users.class
 co/bharat/maxsociety/entity/SocietyDetails.class
 co/bharat/maxsociety/repository/EmergencyContactsRepository.class
+co/bharat/maxsociety/repository/DeRegistrationRequestRepository.class
 co/bharat/maxsociety/service/impl/CircularServiceImpl.class
+co/bharat/maxsociety/response/AdditionalResponseData$AdditionalResponseDataBuilder.class
 co/bharat/maxsociety/response/ResponseData$ResponseDataBuilder.class
 co/bharat/maxsociety/entity/GateKeepRequest.class
 co/bharat/maxsociety/repository/UserRepository.class
@@ -17,6 +22,7 @@ co/bharat/maxsociety/entity/FlatCompositeId.class
 co/bharat/maxsociety/service/impl/UserServiceImpl.class
 co/bharat/maxsociety/service/FlatsService.class
 co/bharat/maxsociety/service/controller/FlatsController.class
+co/bharat/maxsociety/service/controller/DeRegistrationRequestsController.class
 co/bharat/maxsociety/service/controller/CloudMessagingController.class
 co/bharat/maxsociety/configuration/FirebaseConfig.class
 co/bharat/maxsociety/service/controller/CircularsController.class
@@ -33,6 +39,7 @@ co/bharat/maxsociety/enums/FlatType.class
 co/bharat/maxsociety/response/UserResponse.class
 co/bharat/maxsociety/response/ResponseData.class
 co/bharat/maxsociety/repository/VehiclesRepository.class
+co/bharat/maxsociety/entity/DeRegistrationRequest.class
 co/bharat/maxsociety/enums/CircularType.class
 co/bharat/maxsociety/repository/GateKeepRequestRepository.class
 co/bharat/maxsociety/service/UserService.class
@@ -40,6 +47,7 @@ co/bharat/maxsociety/service/controller/UserController.class
 co/bharat/maxsociety/repository/CircularsRepository.class
 co/bharat/maxsociety/service/CircularService.class
 co/bharat/maxsociety/entity/Circulars.class
+co/bharat/maxsociety/request/DTO/DeRegistrationRequestDTO$DeRegistrationRequestDTOBuilder.class
 co/bharat/maxsociety/entity/Address.class
 co/bharat/maxsociety/entity/EmergencyContacts.class
 co/bharat/maxsociety/entity/Users$UsersBuilder.class
