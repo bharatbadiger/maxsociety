@@ -48,10 +48,10 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-	public ResponseEntity<ResponseData<Users>> getUser(@PathVariable String id) {
-		Optional<Users> user = userRepository.findById(id);
-		if(!user.isPresent()) {
+	@RequestMapping(value = "/{id}/{imei}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public ResponseEntity<ResponseData<Users>> getUser(@PathVariable String id,@PathVariable(required = false) String imei) {
+		List<Users> user = userRepository.findByUserIdAndImei(id,imei);
+		if(user.isEmpty()) {
 			return new ResponseEntity<>(new ResponseData<Users>("No User Found", HttpStatus.NOT_FOUND.value(), null),HttpStatus.NOT_FOUND);
 		}
 		/*
@@ -59,7 +59,7 @@ public class UserController {
 		 * ResponseData<Users>("User IMEI does not exist",
 		 * HttpStatus.BAD_REQUEST.value(), null),HttpStatus.BAD_REQUEST); }
 		 */
-		return new ResponseEntity<>(new ResponseData<Users>("User Fetched Successfully", HttpStatus.OK.value(), user.get()),HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseData<Users>("User Fetched Successfully", HttpStatus.OK.value(), user.get(0)),HttpStatus.OK);
 	}
 	
 	@GetMapping
