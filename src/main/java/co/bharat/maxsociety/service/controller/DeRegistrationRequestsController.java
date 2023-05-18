@@ -94,7 +94,7 @@ public class DeRegistrationRequestsController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ResponseData<DeRegistrationRequest>> createUser(
+	public ResponseEntity<ResponseData<DeRegistrationRequest>> createDeRegistrationRequest(
 			@RequestBody DeRegistrationRequestDTO deRegistrationRequestDTO) {
 		try {
 			Optional<Users> user = userRepository.findById(deRegistrationRequestDTO.getUserId());
@@ -135,10 +135,20 @@ public class DeRegistrationRequestsController {
 				return new ResponseEntity<>(new ResponseData<DeRegistrationRequest>("No DeRegistrationRequest Found",
 						HttpStatus.NOT_FOUND.value(), null), HttpStatus.NOT_FOUND);
 			}
+			Optional<Users> user = userRepository.findById(deRegistrationRequestDTO.getUserId());
+			if (!user.isPresent()) {
+				return new ResponseEntity<>(
+						new ResponseData<DeRegistrationRequest>("No User Found", HttpStatus.NOT_FOUND.value(), null),
+						HttpStatus.NOT_FOUND);
+			}
 			DeRegistrationRequest deRegRequest = deRegistrationRequest.get();
 			deRegRequest.setStatus(deRegistrationRequestDTO.getStatus());
 			deRegRequest.setUpdatedBy(deRegistrationRequestDTO.getUpdatedBy());
 			DeRegistrationRequest deregRequestDetails = deRegistrationRequestRepository.save(deRegRequest);
+			if("ACCEPT".equalsIgnoreCase(deRegistrationRequestDTO.getStatus())){
+				user.get().setImei(null);
+				userRepository.save(user.get());
+			}
 			return new ResponseEntity<>(
 					new ResponseData<DeRegistrationRequest>("DeRegistrationRequest updated Successfully",
 							HttpStatus.OK.value(), deregRequestDetails),
