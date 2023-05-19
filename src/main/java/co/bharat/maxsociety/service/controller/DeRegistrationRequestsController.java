@@ -146,8 +146,9 @@ public class DeRegistrationRequestsController {
 			deRegRequest.setUpdatedBy(deRegistrationRequestDTO.getUpdatedBy());
 			DeRegistrationRequest deregRequestDetails = deRegistrationRequestRepository.save(deRegRequest);
 			if("ACCEPT".equalsIgnoreCase(deRegistrationRequestDTO.getStatus())){
-				user.get().setImei(null);
-				userRepository.save(user.get());
+				Users updatedUser = user.get();
+				updatedUser.setImei(null);
+				userRepository.save(updatedUser);
 			}
 			return new ResponseEntity<>(
 					new ResponseData<DeRegistrationRequest>("DeRegistrationRequest updated Successfully",

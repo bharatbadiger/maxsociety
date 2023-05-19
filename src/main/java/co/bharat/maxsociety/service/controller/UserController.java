@@ -1,5 +1,6 @@
 package co.bharat.maxsociety.service.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,10 @@ public class UserController {
 		} else if (relationship != null) {
 			// Fetch users by relationship
 			users = userRepository.findByRelationship(relationship);
+		} else if (userId != null) { 
+			// Fetch users by Id 
+			Optional<Users> user1 = userRepository.findById(userId); 
+			users = user1.map(Collections::singletonList).orElse(Collections.emptyList());
 		} else {
 			// Return all users if no params are specified
 			users = userRepository.findAll();
