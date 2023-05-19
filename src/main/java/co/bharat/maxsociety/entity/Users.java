@@ -117,7 +117,7 @@ public class Users {
 	 
 	private String fcmToken;
 	
-	@Column(unique=true)
+	//@Column(unique=true)
 	private String imei;
 
 }
