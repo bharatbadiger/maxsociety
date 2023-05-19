@@ -135,7 +135,7 @@ public class DeRegistrationRequestsController {
 				return new ResponseEntity<>(new ResponseData<DeRegistrationRequest>("No DeRegistrationRequest Found",
 						HttpStatus.NOT_FOUND.value(), null), HttpStatus.NOT_FOUND);
 			}
-			Optional<Users> user = userRepository.findById(deRegistrationRequestDTO.getUserId());
+			Optional<Users> user = userRepository.findById(deRegistrationRequest.get().getUser().getUserId());
 			if (!user.isPresent()) {
 				return new ResponseEntity<>(
 						new ResponseData<DeRegistrationRequest>("No User Found", HttpStatus.NOT_FOUND.value(), null),
